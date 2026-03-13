@@ -22,46 +22,72 @@ const Login = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card shadow-lg" style={{ width: '400px' }}>
-        <div className="card-body p-5">
-          <h2 className="text-center mb-4">{isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
-          <form onSubmit={handleAuth}>
-            <div className="mb-3">
-              <label className="form-label">Email</label>
+   <div className="d-flex justify-content-center align-items-center vh-100 w-100">
+    <div className="card shadow-lg border-0" style={{ width: '450px', borderRadius: '15px' }}>
+      <div className="card-body p-5">
+        {/* Icono decorativo para darle un toque profesional */}
+        <div className="text-center mb-4">
+          <div className="bg-primary bg-opacity-10 d-inline-block p-3 rounded-circle mb-3">
+            <i className="bi bi-rocket-takeoff-fill text-primary fs-1"></i>
+          </div>
+          <h2 className="fw-bold m-0">{isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
+          <p className="text-muted small">Gestiona tu inventario en Studiogenesis</p>
+        </div>
+
+        <form onSubmit={handleAuth}>
+          <div className="mb-3">
+            <label className="form-label fw-bold text-secondary small">Email</label>
+            <div className="input-group">
+              <span className="input-group-text bg-white border-end-0 text-muted">
+                <i className="bi bi-envelope"></i>
+              </span>
               <input 
                 type="email" 
-                className="form-control" 
+                className="form-control border-start-0 ps-0" 
+                placeholder="nombre@ejemplo.com"
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Contraseña</label>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-bold text-secondary small">Contraseña</label>
+            <div className="input-group">
+              <span className="input-group-text bg-white border-end-0 text-muted">
+                <i className="bi bi-lock"></i>
+              </span>
               <input 
                 type="password" 
-                className="form-control" 
+                className="form-control border-start-0 ps-0" 
+                placeholder="••••••••"
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
               />
             </div>
-            <button type="submit" className="btn btn-primary w-100 mb-3">
-              {isRegistering ? 'Registrarse' : 'Entrar'}
-            </button>
-          </form>
-          <div className="text-center">
-            <button 
-              className="btn btn-link btn-sm" 
-              onClick={() => setIsRegistering(!isRegistering)}
-            >
-              {isRegistering ? '¿Ya tienes cuenta? Logueate' : '¿No tienes cuenta? Regístrate'}
-            </button>
           </div>
+
+          <button type="submit" className="btn btn-primary w-100 py-2 mb-3 fw-bold shadow-sm">
+            {isRegistering ? 'Registrarse' : 'Entrar al Panel'}
+          </button>
+        </form>
+
+        <div className="text-center mt-3">
+          <button 
+            className="btn btn-link btn-sm text-decoration-none text-muted" 
+            onClick={() => setIsRegistering(!isRegistering)}
+          >
+            {isRegistering 
+              ? <span>¿Ya tienes cuenta? <strong className="text-primary">Inicia sesión</strong></span> 
+              : <span>¿No tienes cuenta? <strong className="text-primary">Regístrate ahora</strong></span>
+            }
+          </button>
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
