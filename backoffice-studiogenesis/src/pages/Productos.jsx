@@ -297,28 +297,25 @@ const exportarPDF = () => {
     <div className="container-fluid mt-4">
       {/* Cabecera */}
         <div className="d-flex justify-content-between align-items-center mb-4">
-  <div>
-    <h2 className="fw-bold">Productos</h2>
-    <p className="text-muted">Gestiona el inventario de tu tienda.</p>
-  </div>
+    <div>
+      <h2 className="fw-bold">Productos</h2>
+      <p className="text-muted">Gestiona el inventario de tu tienda.</p>
+    </div>
   <div className="d-flex gap-2">
     {/* Botón Excel */}
     <button className="btn btn-outline-success shadow-sm" onClick={exportarExcel}>
       <i className="bi bi-file-earmark-excel me-2"></i> Excel
     </button>
-    
     {/* Botón PDF */}
     <button className="btn btn-outline-danger shadow-sm" onClick={exportarPDF}>
       <i className="bi bi-file-earmark-pdf me-2"></i> PDF
     </button>
-
     {/* Botón Nuevo (el que ya tenías) */}
     <button className="btn btn-success shadow-sm" onClick={() => setShowForm(true)}>
       <i className="bi bi-box-seam me-2"></i> Nuevo Producto
     </button>
   </div>
 </div>
-
       {/* Buscador */}
       <div className="mb-4">
         <input

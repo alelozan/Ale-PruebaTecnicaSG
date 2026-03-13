@@ -6,14 +6,17 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 
 const Calendar = () => {
+  // Obtener el usuario autenticado desde el contexto de autenticación
   const { user } = useAuth();
   
   // --- ESTADOS ---
   const [eventos, setEventos] = useState([]);      
-  const [productos, setProductos] = useState([]);  
+  const [productos, setProductos] = useState([]); 
+  // Controla la visibilidad del formulario lateral para crear/editar citas 
   const [showForm, setShowForm] = useState(false); 
   const [loading, setLoading] = useState(false);
-  const [editMode, setEditMode] = useState(null); // ID de la cita si estamos editando
+  // Para saber si estamos editando una cita existente o creando una nueva
+  const [editMode, setEditMode] = useState(null); 
 
   // Estado para el registro (Cita de compra)
   const [nuevaCita, setNuevaCita] = useState({
@@ -34,7 +37,7 @@ const Calendar = () => {
       .eq('user_id', user.id);
     setProductos(prods || []);
 
-    // 2. Cargar registros de la tabla calendario
+    // 2. Cargar registros de la tabla calendario 
     const { data: citas, error } = await supabase
       .from('calendario')
       .select(`
@@ -60,10 +63,10 @@ const Calendar = () => {
         raw: cita 
       }
     }));
-
+    // 4. Actualizar el estado con los eventos formateados
     setEventos(eventosCalendario);
   };
-
+// Cargar datos al montar el componente y cada vez que cambie el usuario
   useEffect(() => {
     fetchDatos();
   }, [user]);
@@ -86,7 +89,7 @@ const Calendar = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const datosActualizados = { ...nuevaCita, [name]: value };
-
+// Calcular el nuevo coste total automáticamente al cambiar producto, fecha o unidades
     const nuevoCoste = calcularCosteAutomatico(
       datosActualizados.producto_id, 
       datosActualizados.fecha, 
@@ -110,7 +113,7 @@ const Calendar = () => {
     });
     setShowForm(true);
   };
-
+  // Cerrar el formulario y limpiar estados relacionados
   const closeForm = () => {
     setShowForm(false);
     setEditMode(null);
@@ -122,7 +125,7 @@ const Calendar = () => {
   const handleGuardarCita = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+// Crear objeto con los datos a guardar, incluyendo el ID del usuario para seguridad
     const objetoCita = {
       producto_id: nuevaCita.producto_id,
       fecha: nuevaCita.fecha,
@@ -156,10 +159,10 @@ const Calendar = () => {
     }
     setLoading(false);
   };
-
+  // Eliminar cita 
   const handleEliminarCita = async () => {
     if (!editMode) return;
-    
+    // Confirmar antes de eliminar
     if (window.confirm("¿Deseas eliminar este recordatorio de compra?")) {
       const { error } = await supabase
         .from('calendario')
@@ -186,7 +189,7 @@ const Calendar = () => {
           <i className="bi bi-calendar-plus me-2"></i> Nueva Cita
         </button>
       </div>
-
+    {/* Calendario Principal */}
       <div className="card shadow-sm border-0 p-3">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
@@ -204,8 +207,7 @@ const Calendar = () => {
           buttonText={{ today: 'Hoy', month: 'Mes', week: 'Semana' }}
         />
       </div>
-
-      {/* Menú Lateral (Offcanvas) */}
+      {/* Menú Lateral*/}
       <div className={`offcanvas offcanvas-end ${showForm ? 'show' : ''}`} 
            style={{ visibility: showForm ? 'visible' : 'hidden', width: '400px' }}>
         <div className="offcanvas-header border-bottom">
@@ -214,6 +216,7 @@ const Calendar = () => {
           </h5>
           <button type="button" className="btn-close" onClick={closeForm}></button>
         </div>
+        {/* Formulario para crear/editar citas, reutilizando el mismo para ambos casos */}
         <div className="offcanvas-body">
           <form onSubmit={handleGuardarCita}>
             <div className="mb-3">
@@ -231,7 +234,7 @@ const Calendar = () => {
                 ))}
               </select>
             </div>
-
+            {/* Al seleccionar producto o fecha, el coste se calcula automáticamente en el estado y se muestra al usuario, evitando errores de cálculo manual */}
             <div className="mb-3">
               <label className="form-label fw-bold text-secondary">Fecha</label>
               <input 
