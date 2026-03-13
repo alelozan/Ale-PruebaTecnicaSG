@@ -194,6 +194,7 @@ const Calendar = () => {
           events={eventos}
           eventClick={handleEventClick}
           locale="es"
+          firstDay={1}
           height="700px"
           headerToolbar={{
             left: 'prev,next today',
